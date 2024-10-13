@@ -13,6 +13,7 @@ namespace Shoot
         int time = 0;
         int frameDelay;
         int currentFrame;
+        readonly Point origin = new Point(90, 173);
         public Rectangle[] Frames;
         public override Rectangle Hitbox => new Rectangle(Position, new Point((int)(Frames[currentFrame].Width * Scale.X), (int)(Frames[currentFrame].Height * Scale.Y)));
         public AnimatedSprite(Point position, Vector2 scale, Texture2D image, Rectangle[] frames, int frameDelay)
@@ -40,6 +41,10 @@ namespace Shoot
         public override void Draw(SpriteBatch spiteBatch)
         {
             spiteBatch.Draw(Image, Hitbox, Frames[currentFrame], Color.White);
+        }
+        public void RotatedDraw(SpriteBatch spiteBatch, float rotation)
+        {
+            spiteBatch.Draw(Image, Hitbox, Frames[currentFrame], Color.White, rotation, origin.ToVector2(), SpriteEffects.None, 0);
         }
     }
 }
