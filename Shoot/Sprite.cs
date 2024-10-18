@@ -14,6 +14,7 @@ namespace Shoot
         public Texture2D Image;
         public Point Position;
         protected Vector2 Scale;
+        protected float Rotation;
         public Sprite(Point position, Vector2 scale, Texture2D image)
         {
             Position = position;

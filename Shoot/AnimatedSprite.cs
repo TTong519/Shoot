@@ -12,7 +12,7 @@ namespace Shoot
     {
         int time = 0;
         int frameDelay;
-        int currentFrame;
+        protected int currentFrame;
         readonly Point origin = new Point(90, 173);
         public Rectangle[] Frames;
         public override Rectangle Hitbox => new Rectangle(Position, new Point((int)(Frames[currentFrame].Width * Scale.X), (int)(Frames[currentFrame].Height * Scale.Y)));
