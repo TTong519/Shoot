@@ -36,7 +36,7 @@ namespace Shoot
             Position = new Point(Position.X - xspeed, Position.Y - yspeed);
 
             float hyp = (float)Math.Sqrt((x*x)+(y*y));
-            Rotation = (float)Math.Asin((float)(y/hyp));
+            Rotation = -(float)Math.Atan2(y, -x) - 90;
         }
         public override void Draw(SpriteBatch spiteBatch)
         {

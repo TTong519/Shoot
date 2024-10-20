@@ -44,7 +44,7 @@ namespace Shoot
             Position = new Point(Position.X - (int)speed.X, Position.Y - (int)speed.Y);
             float hyp = (float)Math.Sqrt((x * x) + (y * y));
            
-            Rotation = (float)Math.Atan2(y,x);
+            Rotation = -(float)Math.Atan2(y,-x)-90;
             speed.X = 0;
             speed.Y = 0;
         }
