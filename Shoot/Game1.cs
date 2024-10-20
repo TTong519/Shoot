@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Transactions;
 
 namespace Shoot
 {
@@ -10,6 +11,7 @@ namespace Shoot
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         ScuffedGombie Gombie;
+        Vector2 middle;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -26,6 +28,8 @@ namespace Shoot
 
         protected override void LoadContent()
         {
+
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Rectangle[] playerFrames = [
                 new Rectangle(17, 36, 166, 277),
@@ -33,7 +37,6 @@ namespace Shoot
                 new Rectangle(387, 22, 166, 256),
                 new Rectangle(570, 32, 166, 235),
                 new Rectangle(754, 24, 166, 252),
-                new Rectangle(948, 46, 168, 212)
                 ];
             Rectangle[] zombieFrames = [
                 new Rectangle(17, 36, 166, 277),
@@ -44,7 +47,7 @@ namespace Shoot
                 ];
 
             Rectangle playerIdle = new Rectangle(948, 46, 168, 212);
-            player = new Player(new(100, 100), new(0.5f, 0.5f), Content.Load<Texture2D>("sprite-sheet_0"), playerFrames, playerIdle, 200);
+            player = new Player(new(100, 100), new(0.5f, 0.5f), Content.Load<Texture2D>("sprite-sheet_0"), playerFrames, playerIdle, 200, 10);
             Gombie = new ScuffedGombie(new(300, 300), new(0.5f, 0.5f), Content.Load<Texture2D>("sprite-sheet_1"), zombieFrames, 200);
             // TODO: use this.Content to load your game content here
         }
@@ -53,7 +56,7 @@ namespace Shoot
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            player.Update(gameTime);
+            player.Update(gameTime, Keyboard.GetState(), Mouse.GetState());
             // TODO: Add your update logic here
             Gombie.Update(gameTime, player);
             base.Update(gameTime);
@@ -67,6 +70,8 @@ namespace Shoot
             player.Draw(spriteBatch);
             Gombie.Draw(spriteBatch);
             spriteBatch.End();
+
+
             base.Draw(gameTime);
         }
     }

@@ -14,29 +14,43 @@ namespace Shoot
     {
         Vector3 speed;
         readonly Point origin = new Point(90, 173);
-        public Player(Point position, Vector2 scale, Texture2D image, Rectangle[] frames, Rectangle idleFrame, int frameDelay)
+        public Player(Point position, Vector2 scale, Texture2D image, Rectangle[] frames, Rectangle idleFrame, int frameDelay, int speed)
             : base(position, scale, image, frames, frameDelay)
         {
-
+            this.speed.Z = speed;
         }
 
         public void Update(GameTime gameTime, KeyboardState keyboard, MouseState mouse)
         {
-            int x =  - Hitbox.X;
-            int y = player.Hitbox.Y - Hitbox.Y;
+            int x = mouse.Position.X - Hitbox.X;
+            int y = mouse.Position.Y - Hitbox.Y;
             base.Update(gameTime);
             if (keyboard.IsKeyDown(Keys.W))
             {
-
+                speed.Y = speed.Z;
+            }
+            if(keyboard.IsKeyDown(Keys.S)) 
+            { 
+                speed.Y = -speed.Z; 
+            }
+            if(keyboard.IsKeyDown(Keys.D))
+            {
+                speed.X = -speed.Z;
+            }
+            if(keyboard.IsKeyDown (Keys.A))
+            {
+                speed.X = speed.Z;
             }
             Position = new Point(Position.X - (int)speed.X, Position.Y - (int)speed.Y);
-
             float hyp = (float)Math.Sqrt((x * x) + (y * y));
-            Rotation = (float)Math.Asin((float)(y / hyp));
+           
+            Rotation = (float)Math.Atan2(y,x);
+            speed.X = 0;
+            speed.Y = 0;
         }
         public override void Draw(SpriteBatch spiteBatch)
         {
-            base.Draw(spiteBatch);
+            base.RotatedDraw(spiteBatch, Rotation);
         }
     }
 }
