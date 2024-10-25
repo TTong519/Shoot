@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace Shoot
 {
-    internal class ScuffedGombie:AnimatedSprite
+    internal class ScuffedGombie : AnimatedSprite
     {
-        int xspeed = 10;
-        int yspeed = 10;
-        const int speed = 5;
+        Vector2 Speed;
+        const int speed = 7;
         readonly Point origin = new Point(90, 173);
         public ScuffedGombie(Point position, Vector2 scale, Texture2D image, Rectangle[] frames, int frameDelay) : base(position, scale, image, frames, frameDelay)
         {
@@ -24,19 +23,21 @@ namespace Shoot
 
             int x = player.Hitbox.X - Hitbox.X;
             int y = player.Hitbox.Y - Hitbox.Y;
-            if((x+y)==0)
+            if (Math.Abs(x) + Math.Abs(y) != 0)
             {
-                x = 1;
-                y = 1;
+
+                float value = (float)speed / (Math.Abs(x) + Math.Abs(y));
+                Speed.X = (int)(x * value);
+                Speed.Y = (int)(y * value);
             }
-            float value = (float)speed / (x + y);
-            xspeed = (int)(x * value);
-            yspeed = (int)(y * value);
+            else //you on top of dude, don't move
+            { 
+                Speed = new Vector2(0, 0);
+            }
 
-            Position = new Point(Position.X - xspeed, Position.Y - yspeed);
+            Position = new Point((int)(Position.X + Speed.X), (int)(Position.Y + Speed.Y));
 
-            float hyp = (float)Math.Sqrt((x*x)+(y*y));
-            Rotation = -(float)Math.Atan2(y, -x) - 90;
+            Rotation = (float)Math.Atan2(y, x) + (float)Math.PI/2;
         }
         public override void Draw(SpriteBatch spiteBatch)
         {

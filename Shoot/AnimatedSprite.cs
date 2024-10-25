@@ -7,20 +7,26 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Shoot
-{
+{//4532 Gaviota Ct Encino CA 91436
+    //Elias Lawrence Plishner
+    //(310) 621-4883
+    //Emily Glickfeld Plishner
+    //Michael Glickfeld
+    //(818) 917-4152
     internal class AnimatedSprite : Sprite
     {
         int time = 0;
         int frameDelay;
         protected int currentFrame;
-        readonly Point origin = new Point(90, 173);
         public Rectangle[] Frames;
         public override Rectangle Hitbox => new Rectangle(Position, new Point((int)(Frames[currentFrame].Width * Scale.X), (int)(Frames[currentFrame].Height * Scale.Y)));
+        
         public AnimatedSprite(Point position, Vector2 scale, Texture2D image, Rectangle[] frames, int frameDelay)
             : base(position, scale, image)
         {
             Frames = frames;
             this.frameDelay = frameDelay;
+            Origin = new Point(90, 173);
         }
 
         public virtual void Update(GameTime gameTime)
@@ -41,10 +47,6 @@ namespace Shoot
         public override void Draw(SpriteBatch spiteBatch)
         {
             spiteBatch.Draw(Image, Hitbox, Frames[currentFrame], Color.White);
-        }
-        public void RotatedDraw(SpriteBatch spiteBatch, float rotation)
-        {
-            spiteBatch.Draw(Image, Hitbox, Frames[currentFrame], Color.White, rotation, origin.ToVector2(), SpriteEffects.None, 0);
         }
     }
 }

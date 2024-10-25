@@ -15,6 +15,7 @@ namespace Shoot
         public Point Position;
         protected Vector2 Scale;
         protected float Rotation;
+        protected Point Origin;
         public Sprite(Point position, Vector2 scale, Texture2D image)
         {
             Position = position;
@@ -24,6 +25,10 @@ namespace Shoot
         public virtual void Draw(SpriteBatch spiteBatch)
         {
             spiteBatch.Draw(Image, Hitbox, Color.White);
+        }
+        public virtual void RotatedDraw(SpriteBatch spiteBatch, float rotation)
+        {
+            spiteBatch.Draw(Image, Hitbox, null, Color.White, rotation, Origin.ToVector2(), SpriteEffects.None, 0);
         }
     }
 }

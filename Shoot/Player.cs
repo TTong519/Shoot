@@ -12,41 +12,43 @@ namespace Shoot
 {
     internal class Player : AnimatedSprite
     {
-        Vector3 speed;
+        Vector2 Speed;
         readonly Point origin = new Point(90, 173);
-        public Player(Point position, Vector2 scale, Texture2D image, Rectangle[] frames, Rectangle idleFrame, int frameDelay, int speed)
+        const int topSpeed = 10;
+        public Player(Point position, Vector2 scale, Texture2D image, Rectangle[] frames, Rectangle idleFrame, int frameDelay)
             : base(position, scale, image, frames, frameDelay)
         {
-            this.speed.Z = speed;
         }
 
         public void Update(GameTime gameTime, KeyboardState keyboard, MouseState mouse)
         {
-            int x = mouse.Position.X - Hitbox.X;
-            int y = mouse.Position.Y - Hitbox.Y;
             base.Update(gameTime);
-            if (keyboard.IsKeyDown(Keys.W))
+            Speed.X = 0;
+            Speed.Y = 0;
+
+            Point rotation = new(mouse.Position.X - Hitbox.X, mouse.Position.Y - Hitbox.Y);
+
+            Point movement = new Point(0, 0);
+            if (keyboard.IsKeyDown(Keys.W)) movement.Y += topSpeed;
+            if (keyboard.IsKeyDown(Keys.S)) movement.Y += -topSpeed;
+            if (keyboard.IsKeyDown(Keys.A)) movement.X += topSpeed;
+            if (keyboard.IsKeyDown(Keys.D)) movement.X += -topSpeed;
+
+            if (Math.Abs(movement.X) + Math.Abs(movement.Y) != 0)
             {
-                speed.Y = speed.Z;
+
+                float value = (float)topSpeed / (Math.Abs(movement.X) + Math.Abs(movement.Y));
+                Speed.X = (int)(movement.X * value);
+                Speed.Y = (int)(movement.Y * value);
             }
-            if(keyboard.IsKeyDown(Keys.S)) 
-            { 
-                speed.Y = -speed.Z; 
-            }
-            if(keyboard.IsKeyDown(Keys.D))
+            else //you on top of dude, don't move
             {
-                speed.X = -speed.Z;
+                Speed = new Vector2(0, 0);
             }
-            if(keyboard.IsKeyDown (Keys.A))
-            {
-                speed.X = speed.Z;
-            }
-            Position = new Point(Position.X - (int)speed.X, Position.Y - (int)speed.Y);
-            float hyp = (float)Math.Sqrt((x * x) + (y * y));
-           
-            Rotation = -(float)Math.Atan2(y,-x)-90;
-            speed.X = 0;
-            speed.Y = 0;
+            Position = new Point(Position.X - (int)Speed.X, Position.Y - (int)Speed.Y);
+            
+
+            Rotation = -(float)Math.Atan2(rotation.Y, -rotation.X)-(float)Math.PI/2;
         }
         public override void Draw(SpriteBatch spiteBatch)
         {
