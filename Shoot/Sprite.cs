@@ -26,9 +26,9 @@ namespace Shoot
         {
             spiteBatch.Draw(Image, Hitbox, Color.White);
         }
-        public virtual void RotatedDraw(SpriteBatch spiteBatch, float rotation)
+        public virtual void RotatedDraw(SpriteBatch spiteBatch, float rotation, Rectangle scource)
         {
-            spiteBatch.Draw(Image, Hitbox, null, Color.White, rotation, Origin.ToVector2(), SpriteEffects.None, 0);
+            spiteBatch.Draw(Image, Hitbox, scource, Color.White, rotation, Origin.ToVector2(), SpriteEffects.None, 0);
         }
     }
 }

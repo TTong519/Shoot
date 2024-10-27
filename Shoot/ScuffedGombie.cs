@@ -11,7 +11,7 @@ namespace Shoot
     internal class ScuffedGombie : AnimatedSprite
     {
         Vector2 Speed;
-        const int speed = 7;
+        const int speed = 3;
         readonly Point origin = new Point(90, 173);
         public ScuffedGombie(Point position, Vector2 scale, Texture2D image, Rectangle[] frames, int frameDelay) : base(position, scale, image, frames, frameDelay)
         {
@@ -27,8 +27,8 @@ namespace Shoot
             {
 
                 float value = (float)speed / (Math.Abs(x) + Math.Abs(y));
-                Speed.X = (int)(x * value);
-                Speed.Y = (int)(y * value);
+                Speed.X = (float)x * (float)value;
+                Speed.Y = (float)y * (float)value;
             }
             else //you on top of dude, don't move
             { 
@@ -41,7 +41,7 @@ namespace Shoot
         }
         public override void Draw(SpriteBatch spiteBatch)
         {
-            base.RotatedDraw(spiteBatch, Rotation);
+            base.RotatedDraw(spiteBatch, Rotation, Frames[currentFrame]);
         }
     }
 }
