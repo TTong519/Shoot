@@ -17,13 +17,13 @@ namespace Shoot
         const int topSpeed = 5;
         bool isIdle = true;
         Rectangle idleFrame;
-        Point[] gunz = [
-                new Point(106,36),
-                new Rectangle(201, 32, 166, 235),
-                new Rectangle(387, 22, 166, 256),
-                new Rectangle(570, 32, 166, 235),
-                new Rectangle(754, 24, 166, 252),
-                ];
+        //Point[] gunz = [
+         //       new Point(106,36),
+          //      new Rectangle(201, 32, 166, 235),
+          //      new Rectangle(387, 22, 166, 256),
+          //      new Rectangle(570, 32, 166, 235),
+          //      new Rectangle(754, 24, 166, 252),
+          //      ];
         public Player(Point position, Vector2 scale, Texture2D image, Rectangle[] frames, Rectangle idleFrame, int frameDelay)
             : base(position, scale, image, frames, frameDelay)
         {
