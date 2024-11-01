@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System;
+using static System.Math;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace Shoot
         public Bullet(Point position, Vector2 scale, Texture2D image, Point origin, Point tgt)
             : base(position, scale, image)
         {
-            Origin = new Point(90, 173);
+            Origin = new Point(382, 171);
             Position = origin;
             int x = tgt.X - origin.X;
             int y = tgt.Y - origin.Y;
@@ -26,7 +27,7 @@ namespace Shoot
                 Speed.X = (float)x * (float)value;
                 Speed.Y = (float)y * (float)value;
             }
-            Rotation = (float)Math.Atan2(y, x) + (float)Math.PI / 2;
+            Rotation = (float)Math.Atan2(y, x) + (float)PI;
         }
         public void Update()
         {

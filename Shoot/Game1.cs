@@ -46,7 +46,7 @@ namespace Shoot
                 ];
 
             Rectangle playerIdle = new Rectangle(948, 46, 168, 212);
-            player = new Player(new(100, 100), new(0.25f, 0.25f), Content.Load<Texture2D>("sprite-sheet_0"), playerFrames, playerIdle, 200);
+            player = new Player(new(100, 100), new(0.25f, 0.25f), Content.Load<Texture2D>("sprite-sheet_0"), playerFrames, playerIdle, 200, Content.Load<Texture2D>("816-8162960_lazer-beam-png"));
             Gombie = new ScuffedGombie(new(300, 300), new(0.25f, 0.25f), Content.Load<Texture2D>("sprite-sheet_1"), zombieFrames, 200);
             // TODO: use this.Content to load your game content here
         }
@@ -58,6 +58,7 @@ namespace Shoot
             player.Update(gameTime, Keyboard.GetState(), Mouse.GetState());
             // TODO: Add your update logic here
             Gombie.Update(gameTime, player);
+            this.Window.Title = $"zX:{Gombie.Speed.X},zY:{Gombie.Speed.Y},pX:{player.Speed.X},pY:{player.Speed.Y}";
             base.Update(gameTime);
         }
 
