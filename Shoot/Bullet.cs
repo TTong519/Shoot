@@ -13,7 +13,7 @@ namespace Shoot
     {
         Rectangle scource = new Rectangle(1, 1, 790, 350);
         Vector2 Speed = new Vector2(0, 0);
-        int speed = 20;
+        int speed = 50;
         public Bullet(Point position, Vector2 scale, Texture2D image, Point origin, Point tgt)
             : base(position, scale, image)
         {

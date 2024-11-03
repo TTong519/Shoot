@@ -19,15 +19,6 @@ namespace Shoot
         Rectangle idleFrame;
         Texture2D bulletTexture;
         List<Bullet> Bullets = new List<Bullet>();
-        Point[] gunz = [
-                new (106,36),
-                new (296,32),
-                new (482,22),
-                new (665,32),
-                new (849,24),
-                ];
-        Point idleGun = new Point(1044, 46);
-
         public Player(Point position, Vector2 scale, Texture2D image, Rectangle[] frames, Rectangle idleFrame, int frameDelay, Texture2D bulletTexture)
             : base(position, scale, image, frames, frameDelay)
         {
@@ -35,7 +26,7 @@ namespace Shoot
             this.bulletTexture = bulletTexture;
         }
 
-        public void Update(GameTime gameTime, KeyboardState keyboard, MouseState mouse)
+        public void Update(GameTime gameTime, KeyboardState keyboard, MouseState mouse, GraphicsDevice gfx)
         {
             base.Update(gameTime);
             isIdle = true;
@@ -44,6 +35,10 @@ namespace Shoot
             for (int i = 0; i < Bullets.Count; i++)
             {
                 Bullets[i].Update();
+                if(!Bullets[i].Hitbox.Intersects(gfx.Viewport.Bounds))
+                {
+                    Bullets.RemoveAt(i);
+                }
             }
             Point rotation = new(mouse.Position.X - Hitbox.X, mouse.Position.Y - Hitbox.Y);
 
@@ -68,17 +63,24 @@ namespace Shoot
             
 
             Rotation = -(float)Math.Atan2(rotation.Y, -rotation.X)-(float)Math.PI/2;
-            if(mouse.LeftButton==ButtonState.Pressed)
+            if (mouse.LeftButton == ButtonState.Pressed)
             {
                 shoot(mouse.Position);
             }
         }
         public void shoot(Point mouselocation)
         {
-            Bullets.Add(new Bullet(new Point(Hitbox.X + gunz[currentFrame].X/4, Hitbox.Y + gunz[currentFrame].Y / 4), new Vector2(0.1f, 0.1f), bulletTexture, new Point(Hitbox.X + gunz[currentFrame].X / 4, Hitbox.Y + gunz[currentFrame].Y / 4), mouselocation));
+            Bullets.Add(new Bullet(new Point(Hitbox.X + origin.X/6, Hitbox.Y + origin.Y / 6), new Vector2(0.05f, 0.05f), bulletTexture, new Point((Hitbox.X + origin.X / 4)-20, (Hitbox.Y + origin.Y / 4)-50), mouselocation));
         }
         public override void Draw(SpriteBatch spiteBatch)
         {
+            for (int i = 0; i < Bullets.Count; i++)
+            {
+                if (!Bullets[i].Hitbox.Intersects(Hitbox))
+                {
+                    Bullets[i].Draw(spiteBatch);
+                }
+            }
             if (isIdle)
             {
                 spiteBatch.Draw(Image, new Rectangle(Position, new Point((int)(idleFrame.Width * Scale.X), (int)(idleFrame.Height * Scale.Y))), idleFrame, Color.White, Rotation, Origin.ToVector2(), SpriteEffects.None, 0);
@@ -86,10 +88,6 @@ namespace Shoot
             else
             {
                 base.RotatedDraw(spiteBatch, Rotation, Frames[currentFrame]);
-            }
-            for (int i = 0; i < Bullets.Count; i++)
-            {
-                Bullets[i].Draw(spiteBatch);
             }
         }
     }

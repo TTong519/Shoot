@@ -55,7 +55,7 @@ namespace Shoot
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            player.Update(gameTime, Keyboard.GetState(), Mouse.GetState());
+            player.Update(gameTime, Keyboard.GetState(), Mouse.GetState(), GraphicsDevice);
             // TODO: Add your update logic here
             Gombie.Update(gameTime, player);
             this.Window.Title = $"zX:{Gombie.Speed.X},zY:{Gombie.Speed.Y},pX:{player.Speed.X},pY:{player.Speed.Y}";
