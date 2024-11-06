@@ -12,6 +12,8 @@ namespace Shoot
 {
     internal class Player : AnimatedSprite
     {
+        public int health;
+        private bool prevState = false;
         public Vector2 Speed;
         readonly Point origin = new Point(90, 173);
         const int topSpeed = 5;
@@ -65,7 +67,18 @@ namespace Shoot
             Rotation = -(float)Math.Atan2(rotation.Y, -rotation.X)-(float)Math.PI/2;
             if (mouse.LeftButton == ButtonState.Pressed)
             {
+                prevState = true;
+            }
+
+            else if (mouse.LeftButton == ButtonState.Released && prevState)
+            {
+                prevState = false;
                 shoot(mouse.Position);
+            }
+            
+            else
+            {
+                prevState = false;
             }
         }
         public void shoot(Point mouselocation)
