@@ -72,5 +72,13 @@ namespace Shoot
         {
             base.RotatedDraw(spiteBatch, Rotation, Frames[currentFrame]);
         }
+        public bool isHit(Bullet bullet)
+        {
+            if(Hitbox.Intersects(bullet.Hitbox))
+            {
+                return true; 
+            }
+            return false;
+        }
     }
 }

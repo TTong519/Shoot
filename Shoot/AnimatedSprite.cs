@@ -15,8 +15,8 @@ namespace Shoot
     //(818) 917-4152
     internal class AnimatedSprite : Sprite
     {
-        int time = 0;
-        int frameDelay;
+        protected int time = 0;
+        protected int frameDelay;
         protected int currentFrame;
         public Rectangle[] Frames;
         public override Rectangle Hitbox => new Rectangle(Position, new Point((int)(Frames[currentFrame].Width * Scale.X), (int)(Frames[currentFrame].Height * Scale.Y)));
@@ -40,7 +40,6 @@ namespace Shoot
                 {
                     currentFrame = 0;
                 }
-
                 time = 0;
             }
         }

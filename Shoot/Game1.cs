@@ -20,9 +20,10 @@ namespace Shoot
         Player player;
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        List<ScuffedGombie> GombieList;
+        List<ScuffedGombie> GombieList = new List<ScuffedGombie>();
         private Texture2D playerTexture;
         private Texture2D gombieTexture;
+        Random random = new Random();
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -61,20 +62,30 @@ namespace Shoot
         protected override void Update(GameTime gameTime)
         {
             counter++;
-            if (counter % 30000 == 0)
+            if (counter % 30 == 0)
             {
-                GombieList.Add(new ScuffedGombie(new Point(0,0), new Vector2(0.25f, 0.25f), gombieTexture, zombieFrames, 200));
+                GombieList.Add(new ScuffedGombie(new Point(random.Next(100, GraphicsDevice.Viewport.Bounds.Width-100), random.Next(100, GraphicsDevice.Viewport.Bounds.Height - 100)), new Vector2(0.25f, 0.25f), gombieTexture, zombieFrames, 200));
             }
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-            player.Update(gameTime, Keyboard.GetState(), Mouse.GetState(), GraphicsDevice);
+            player.Update(gameTime, Keyboard.GetState(), Mouse.GetState(), GraphicsDevice, GombieList);
             // TODO: Add your update logic here
-            foreach (var t in GombieList)
+            for (int i = 0; i < GombieList.Count; i++)
             {
-                if (t != null)
+                if (GombieList[i] != null)
                 {
-                    t.Update(gameTime);
+                    GombieList[i].Update(gameTime, player);
+                    for (int j = 0; j < player.Bullets.Count; j++)
+                    {
+                        if (GombieList[i].isHit(player.Bullets[j]) && GombieList.Count != 0)
+                        {
+                            GombieList.RemoveAt(i);
+                            player.Bullets.RemoveAt(j);
+                        }
+                    }
                 }
+            }
+            if(player.health <= 0)
+            {
+                throw new Exception("you died, game over");
             }
             base.Update(gameTime);
         }

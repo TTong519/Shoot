@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Timers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,20 +21,24 @@ namespace Shoot
         bool isIdle = true;
         Rectangle idleFrame;
         Texture2D bulletTexture;
-        List<Bullet> Bullets = new List<Bullet>();
+        public List<Bullet> Bullets = new List<Bullet>();
         public Player(Point position, Vector2 scale, Texture2D image, Rectangle[] frames, Rectangle idleFrame, int frameDelay, Texture2D bulletTexture)
             : base(position, scale, image, frames, frameDelay)
         {
             this.idleFrame = idleFrame;
             this.bulletTexture = bulletTexture;
+            health = 100;
         }
 
-        public void Update(GameTime gameTime, KeyboardState keyboard, MouseState mouse, GraphicsDevice gfx)
+        public void Update(GameTime gameTime, KeyboardState keyboard, MouseState mouse, GraphicsDevice gfx, List<ScuffedGombie> gomlist)
         {
-            base.Update(gameTime);
             isIdle = true;
             Speed.X = 0;
             Speed.Y = 0;
+            foreach(ScuffedGombie gombie in gomlist)
+            {
+                takeDamage(gombie, gameTime);
+            }
             for (int i = 0; i < Bullets.Count; i++)
             {
                 Bullets[i].Update();
@@ -101,6 +106,25 @@ namespace Shoot
             else
             {
                 base.RotatedDraw(spiteBatch, Rotation, Frames[currentFrame]);
+            }
+        }
+        public void takeDamage(ScuffedGombie gombie, GameTime gameTime)
+        {
+            time += gameTime.ElapsedGameTime.Milliseconds;
+            
+            if (time >= frameDelay)
+            {
+                if (gombie.Hitbox.Intersects(Hitbox))
+                {
+                    health -= 10;
+                }
+                //change currentFrame
+                currentFrame++;
+                if (currentFrame >= Frames.Length)
+                {
+                    currentFrame = 0;
+                }
+                time = 0;
             }
         }
     }
